@@ -1,7 +1,159 @@
+// Button List
+const numberButtons = document.querySelectorAll('.number'); // Number Buttons
+const operatorButtons = document.querySelectorAll('.operator-button'); // Operator Buttons
+const eqaulsBtn = document.getElementById('='); // Equals Button
+const clearBtn = document.getElementById('clear'); // Clear Button
+const deleteBtn = document.getElementById('delete'); // Delete Button
+const prevCalc = document.getElementById('screen-prev'); // Previous Calulation Display
+const displayResult = document.getElementById('screen-output') // Main Calculator Output
+
+// Number Variables
+let newNumber = "";
+let firstNumber = "";
+let secondNumber = "";
+let result = "";
+
+// Operator Choice/Check
+let operatorCheck = null;
+
+// Add event listener to each Numpad button
+numberButtons.forEach(element => {
+    element.addEventListener('click', createNumber);
+})
+
+// Adds event listener to each Operator button
+operatorButtons.forEach(element => {
+    element.addEventListener('click', activateOperator);
+})
+
+// Equals Button Event Listener
+eqaulsBtn.addEventListener('click', evaluate); 
+
+// Clear Button Event Listener
+clearBtn.addEventListener('click', clearButton);
+
+// Delete Button Event Listener
+deleteBtn.addEventListener('click', deleteButton);
+
+// Create Number String Function
+function createNumber(button) {
+    let value = button.target.id;
+    newNumber = newNumber + value;
+    console.log(newNumber);
+
+    if (!operatorCheck) {
+        firstNumber = firstNumber + newNumber;
+        firstNumber = parseInt(firstNumber);
+        newNumber = ""
+        displayResult.textContent = firstNumber;
+    }
+    else {
+        secondNumber = secondNumber + newNumber;
+        secondNumber = parseInt(secondNumber);
+        newNumber = "";
+        displayResult.textContent = secondNumber;
+    }
+}
+
+// Activate Operator Choice Function
+function activateOperator() {
+    
+    if (firstNumber&&secondNumber) {evaluate();}
+    
+    switch (this.id) {
+        case '÷':
+            console.log("Changed operator to divide!");
+            prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
+            operatorCheck = '÷';
+            break;
+        case '×':
+            console.log("Changed operator to Multiply!");
+            prevCalc.textContent = `${firstNumber} ${this.id} `;
+            operatorCheck = '×';
+            break;
+        case '-':
+            console.log("Changed operator to Subtract!");
+            prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
+            operatorCheck = '-';
+            break;
+        case '+':
+            console.log("Changed operator to Addition!");
+            prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
+            operatorCheck = '+';
+            break;
+    }
+}
+
+// Evaluator Function
+function evaluate() {
+    if (secondNumber === 0 && operatorCheck === '÷') {
+        displayResult.textContent = "Error.";
+    }
+    else if (firstNumber&&secondNumber) {
+        result = operate(operatorCheck, firstNumber, secondNumber);
+        result = roundResult(result);
+        displayResult.textContent = result;
+        prevCalc.textContent = `${firstNumber} ${operatorCheck} ${secondNumber} = `;
+
+        firstNumber = result;
+        secondNumber = "";
+        return result;
+    }
+}
+
+// Round Number Function
+function roundResult(myNum) {
+    return Math.round(myNum * 1000) / 1000;
+  }
+
+// Clear Button
+function clearButton() {
+    displayResult.textContent = 0;
+    prevCalc.textContent = 0;
+    firstNumber =  "";
+    secondNumber = "";
+    newNumber = "";
+    operatorCheck = null;
+}
+
+// Delete Button
+function deleteButton() {
+    let deleteNum = document.getElementById('screen-output').textContent;
+    deleteNum = deleteNum.slice(0, -1);
+    console.log(deleteNum);
+    
+    if (!operatorCheck) {
+        firstNumber = firstNumber.toString();
+        firstNumber = firstNumber.slice(0, -1);
+        firstNumber = parseInt(firstNumber);
+        displayResult.textContent = firstNumber;
+    }
+    else {
+        secondNumber = secondNumber.toString();
+        secondNumber = secondNumber.slice(0, -1);
+        secondNumber = parseInt(secondNumber);
+        displayResult.textContent = secondNumber;
+    }
+}
+
 // Operator Functions
+function operate(funcChoice, a, b) {
+    console.log("Evaluation function has been activated");
+    switch (funcChoice) {
+        case '÷':
+            return divide(a, b);
+        case '×':
+            return multiply(a, b);
+        case '-':
+            return subtract(a, b);
+        case '+':
+            return add(a, b);
+    }
+}
+
 function add(a, b) {
     return a + b;
-};
+}
 
 function subtract(a, b) {
     return a - b;
@@ -13,160 +165,4 @@ function multiply(a, b) {
 
 function divide(a, b) {
     return a / b;
-}
-
-// Operate  Function
-function operate(func, a, b) {
-    return func(a, b);
-}
-
-// Function to reset the screen and all values.
-function clearButton() {
-    let displayValue = 0;
-    screenDisplay.textContent = displayValue;
-    topLayerScreen = "";
-    screenCalculation.textContent = "";
-    firstOfPair = "";
-    secondOfPair = "";
-    operator = false;
-    isOperatorActive  = false;
-};
-
-// Add event listener to each Numpad button
-const numberButtons = document.querySelectorAll('.number');
-numberButtons.forEach(element => {
-    element.addEventListener('click', buildNumberString);
-});
-
-// Adds individual Event listeners
-document.getElementById('clear').addEventListener('click', clearButton); // Clear Button
-document.getElementById('=').addEventListener('click', equalsButtonFunction); // Equals Button
-
-// Adds event listeners to Operator Buttons
-const operatorButtons = document.querySelectorAll('.operator-button');
-operatorButtons.forEach(element => {
-    element.addEventListener('click', activateOperator);
-})
-
-// Variables for the Calc Screen
-let screenCalculation = document.getElementById('screen-working');
-let screenDisplay = document.getElementById('screen-output');
-
-let topLayerScreen = " "
-screenCalculation.textContent = topLayerScreen;
-
-// Empty strings for each value to evaluate
-let firstOfPair = "";
-let secondOfPair = "";
-
-// Variables to set if operator active and the choice
-let operator = false;
-let operatorChoice = "";
-let isOperatorActive = false;
-
-// Function to create a string of numbers
-function buildNumberString(button) {
-    let value = button.target.id;
-
-    // Build first integer for evaluation
-    if (!operator) { 
-
-        firstOfPair = firstOfPair.concat(value); // Adds selected digit to Integer 1
-        
-        screenDisplay.textContent = firstOfPair; // Displays Integer 1 string to the  display.
-
-        topLayerScreen = topLayerScreen.concat(value); // Adds digits to top screen calculation string
-        screenCalculation.textContent = topLayerScreen; // Displays this
-    }
-
-    // Second integer for evaluation
-    else if (operator) {
-        secondOfPair = secondOfPair.concat(value);
-
-        screenDisplay.textContent = secondOfPair;
-
-        topLayerScreen = topLayerScreen.concat(value);
-        screenCalculation.textContent = topLayerScreen;
-        
-    }
-}
-
-// Function that activates an operator
-function activateOperator() {
-    if (isOperatorActive) {
-        equalsButtonFunction();
-        topLayerScreen = topLayerScreen.replace("=", "");
-        screenCalculation.textContent = topLayerScreen;
-    }
-    switch (this.id) {
-        case '÷':
-            isOperatorActive = true;
-            operatorChoice = 'Divide';
-            console.log("Changed operator to divide!");
-            topLayerScreen = topLayerScreen.concat(" ÷ ");
-            screenCalculation.textContent = topLayerScreen;
-            break;
-        case '×':
-            isOperatorActive = true;
-            operatorChoice = 'Multiply';
-            console.log("Changed operator to Multiply!");
-            topLayerScreen = topLayerScreen.concat(" × ");
-            screenCalculation.textContent = topLayerScreen;    
-            break;
-        case '-':
-            isOperatorActive = true;
-            operatorChoice = 'Subtract';
-            console.log("Changed operator to Subtract!");
-            topLayerScreen = topLayerScreen.concat(" - ");
-            screenCalculation.textContent = topLayerScreen;    
-            break;
-        case '+':
-            isOperatorActive = true;
-            operatorChoice = 'Addition';
-            console.log("Changed operator to Addition!");
-            topLayerScreen = topLayerScreen.concat(" + ");
-            screenCalculation.textContent = topLayerScreen;    
-            break;
-    }
-
-    screenDisplay.textContent = "";
-    return operator = true;
-}
-
-
-
-function equalsButtonFunction() {
-
-    topLayerScreen = topLayerScreen.concat(" = ");
-    screenCalculation.textContent = topLayerScreen;
-    
-    firstOfPair = parseInt(firstOfPair);
-    secondOfPair = parseInt(secondOfPair);
-
-    switch (operatorChoice) {
-        case 'Divide':
-            screenDisplay.textContent = divide(firstOfPair, secondOfPair);
-            firstOfPair = divide(firstOfPair, secondOfPair);
-            secondOfPair = "";
-            operatorChoice = null;
-            break;
-        case 'Multiply':
-            screenDisplay.textContent = multiply(firstOfPair, secondOfPair);
-            firstOfPair = multiply(firstOfPair, secondOfPair);
-            secondOfPair = "";
-            operatorChoice = null;
-            break;
-        case 'Subtract':
-            screenDisplay.textContent = subtract(firstOfPair, secondOfPair);
-            firstOfPair = subtract(firstOfPair, secondOfPair);
-            secondOfPair = "";
-            operatorChoice = null;
-            break;
-        case 'Addition':
-            screenDisplay.textContent = add(firstOfPair, secondOfPair);
-            firstOfPair = add(firstOfPair, secondOfPair);
-            secondOfPair = "";
-            operatorChoice = null;
-            break;
-    }
 }
