@@ -1,0 +1,103 @@
+body {
+    background-color: rgb(221, 221, 191);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+
+}
+
+.calculator-body {
+    width: 300px;
+    height: 400px;
+    display: flex;
+    margin-top: 10%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
+    background-color: orange;
+    border: 2px solid rgb(136, 89, 1);
+    border-radius: 10px;
+    position: static;
+}
+
+/* The screen for the calculator */
+
+.calculator-screen {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    padding-top: 4px;
+    margin: 8px;
+    color: white;
+    background-color: rgb(87, 86, 86);
+    border: 2px solid rgb(59, 59, 58);
+    border-radius: 5px;
+}
+
+.calculator-screen h4, h6 {
+    padding: 12px;
+}
+
+.calculator-screen h4 {
+    font-weight: 100;
+    font-size: 22px;
+}
+
+.calculator-screen h6 {
+    font-weight: 80;
+    font-size: 14px;
+}
+
+#screen-output {
+    width: 100%;
+    text-align: end;
+}
+
+/* Numberpad Buttons */
+
+.numpad-row, .row1-buttons {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    gap: 18px;
+}
+
+.numpad-button, .clear-buttons {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 0, 0.568);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 0, 0.5);
+    color: rgb(66, 66, 66);
+}
+
+.numpad-button:hover, .clear-buttons:hover {
+    background-color: rgb(250, 250, 81);
+    cursor: pointer;
+}
+
+.operator-button {
+    background-color: rgb(255, 136, 0);
+    border: 2px solid rgb(255, 208, 0);
+}
+
+.equals {
+    background-color: rgba(255, 68, 0, 0.753);
+    color: rgb(255, 255, 71);
+}
+
+
