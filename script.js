@@ -2,54 +2,64 @@
 const numberButtons = document.querySelectorAll('.number'); // Number Buttons
 const operatorButtons = document.querySelectorAll('.operator-button'); // Operator Buttons
 const eqaulsBtn = document.getElementById('='); // Equals Button
+const decimalBtn = document.getElementById('.'); // Decimal Button
 const clearBtn = document.getElementById('clear'); // Clear Button
 const deleteBtn = document.getElementById('delete'); // Delete Button
 const prevCalc = document.getElementById('screen-prev'); // Previous Calulation Display
 const displayResult = document.getElementById('screen-output') // Main Calculator Output
+
+// Keyboard Inputs
+
 
 // Number Variables
 let newNumber = "";
 let firstNumber = "";
 let secondNumber = "";
 let result = "";
+let decimalActive = false;
 
 // Operator Choice/Check
 let operatorCheck = null;
 
-// Add event listener to each Numpad button
+// Add event listeners to each Numpad button
 numberButtons.forEach(element => {
     element.addEventListener('click', createNumber);
 })
 
-// Adds event listener to each Operator button
+// Adds event listeners to each Operator button
 operatorButtons.forEach(element => {
     element.addEventListener('click', activateOperator);
 })
 
-// Equals Button Event Listener
+// Equals Button Event Listeners
 eqaulsBtn.addEventListener('click', evaluate); 
 
-// Clear Button Event Listener
+// Clear Button Event Listeners
 clearBtn.addEventListener('click', clearButton);
 
-// Delete Button Event Listener
+// Delete Button Event Listeners
 deleteBtn.addEventListener('click', deleteButton);
+
+// Decimal Input Event Listeners
+decimalBtn.addEventListener('click', createNumber);
 
 // Create Number String Function
 function createNumber(button) {
-    let value = button.target.id;
-    newNumber = newNumber + value;
-    console.log(newNumber);
+    let value = button.target;
+    value = button.target.id;
+
+    newNumber = value;
+
+    if (decimalActive === true && newNumber === ".") {return false;}
+    if (newNumber === ".") {decimalActive = true;}
 
     if (!operatorCheck) {
         firstNumber = firstNumber + newNumber;
-        firstNumber = parseInt(firstNumber);
         newNumber = ""
         displayResult.textContent = firstNumber;
     }
     else {
         secondNumber = secondNumber + newNumber;
-        secondNumber = parseInt(secondNumber);
         newNumber = "";
         displayResult.textContent = secondNumber;
     }
@@ -58,11 +68,10 @@ function createNumber(button) {
 // Activate Operator Choice Function
 function activateOperator() {
 
+    decimalActive = false;
     if (firstNumber&&secondNumber) {evaluate();}
 
-    operatorButtons.forEach(element => {
-        element.classList.remove('operator-button-active');
-    })
+
     this.classList.add('operator-button-active');
     
     switch (this.id) {
@@ -96,6 +105,8 @@ function evaluate() {
         displayResult.textContent = "Error.";
     }
     else if (firstNumber&&secondNumber) {
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
         operatorButtons.forEach(element => {
             element.classList.remove('operator-button-active');
         })
@@ -108,7 +119,6 @@ function evaluate() {
         secondNumber = "";
         return result;
     }
-
 }
 
 // Round Number Function
@@ -123,6 +133,7 @@ function clearButton() {
     firstNumber =  "";
     secondNumber = "";
     newNumber = "";
+    decimalActive = false;
     operatorCheck = null;
     operatorButtons.forEach(element => {
         element.classList.remove('operator-button-active');
@@ -131,20 +142,27 @@ function clearButton() {
 
 // Delete Button
 function deleteButton() {
-    let deleteNum = document.getElementById('screen-output').textContent;
-    deleteNum = deleteNum.slice(0, -1);
-    console.log(deleteNum);
-    
+
     if (!operatorCheck) {
         firstNumber = firstNumber.toString();
         firstNumber = firstNumber.slice(0, -1);
-        firstNumber = parseInt(firstNumber);
+
+        if(!firstNumber) {
+            return clearButton();
+        }
+    
         displayResult.textContent = firstNumber;
     }
+
     else {
         secondNumber = secondNumber.toString();
         secondNumber = secondNumber.slice(0, -1);
-        secondNumber = parseInt(secondNumber);
+        if (!secondNumber) {
+            secondNumber = 0;
+            displayResult.textContent = secondNumber;
+            return secondNumber;
+        }
+    
         displayResult.textContent = secondNumber;
     }
 }
@@ -178,4 +196,80 @@ function multiply(a, b) {
 
 function divide(a, b) {
     return a / b;
+}
+
+window.addEventListener('keydown', keyboardInput);
+
+function keyboardInput(element) {
+
+    if (element.key >= 0 && element.key <= 9 || element.key === ".") {
+        createNumberFromKey(element);
+    }
+    else if (element.key === 'd') {
+        deleteButton();
+    }
+    else if (element.key === 'c') {
+        clearButton();
+    }
+    else if (element.key === '=') {
+        evaluate();
+    }
+    else if (element.key === '/' || element.key === 'x' || element.key === '-' || element.key === '+') {
+        activateOperatorKey(element);
+    }
+}
+
+function createNumberFromKey(input) {
+    let value = input.key;
+    newNumber = value;
+
+    if (decimalActive === true && newNumber === ".") {return false;}
+    if (newNumber === ".") {decimalActive = true;}
+
+    if (!operatorCheck) {
+        firstNumber = firstNumber + newNumber;
+        newNumber = ""
+        displayResult.textContent = firstNumber;
+    }
+    else {
+        secondNumber = secondNumber + newNumber;
+        newNumber = "";
+        displayResult.textContent = secondNumber;
+    }
+}
+
+// Activate Operator Choice Function
+function activateOperatorKey(element) {
+    console.log(element);
+    decimalActive = false;
+
+    if (firstNumber&&secondNumber) {evaluate();}
+
+    const opBtn = document.getElementById(`${element.key}`);
+   
+    console.log(opBtn);
+    opBtn.classList.add('operator-button-active');
+    
+    switch (opBtn.id) {
+        case '/':
+            console.log("Changed operator to divide!");
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '÷';
+            break;
+        case 'x':
+            console.log("Changed operator to Multiply!");
+            prevCalc.textContent = `${firstNumber} ${opBtn.id} `;
+            operatorCheck = '×';
+            break;
+        case '-':
+            console.log("Changed operator to Subtract!");
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '-';
+            break;
+        case '+':
+            console.log("Changed operator to Addition!");
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '+';
+            break;
+    }
 }

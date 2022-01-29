@@ -1,6 +1,17 @@
+
+@font-face {
+    font-family: 'Casio'; 
+    src: url('fonts/OPTIEdgarBold-Extended.otf'); 
+}
+
+@font-face {
+    font-family: 'Digital'; 
+    src: url('fonts/Square.ttf'); 
+}
+
 body {
-    background-color: rgb(221, 221, 191);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: rgb(255, 255, 139);
+    font-family: 'Digital';
     display: flex;
     justify-content: center;
 }
@@ -12,19 +23,28 @@ body {
 }
 
 .calculator-body {
-    width: 250px;
-    height: 400px;
+    width: 300px;
+    height: 480px;
     display: flex;
     margin-top: 8%;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 18px;
-    background-color: orange;
+    background-color: rgb(247, 155, 16);
     border: 2px solid rgb(136, 89, 1);
     border-radius: 10px;
     position: static;
+    box-shadow: black 1px 1px 1px 1px;
+}
+
+.calc-name {
+    align-self:flex-start;
+    color: rgb(66, 66, 66);
+    margin: -6px 0px;
+    font-family: 'Casio';
+    color: rgb(66, 66, 66);
 }
 
 /* The screen for the calculator */
@@ -39,8 +59,12 @@ body {
     margin: 8px;
     color: white;
     background-color: rgb(99, 97, 97);
-    border: 2px  solid rgb(104, 73, 15);
+    border: 2px  solid rgba(80, 53, 4, 0.884);
     border-radius: 5px;
+    font-family: 'Digital';
+
+
+    color: rgb(252, 252, 203);
 }
 
 .calculator-screen h4, h6 {
@@ -48,13 +72,14 @@ body {
 }
 
 .calculator-screen h4 {
-    font-weight: 100;
-    font-size: 22px;
+    font-weight: bold;
+    font-size: 32px;
 }
 
 .calculator-screen h6 {
-    font-weight: 80;
-    font-size: 14px;
+    font-weight: normal;
+    font-size: 24px;
+    padding-top: 22px;
 }
 
 #screen-output {
@@ -70,7 +95,7 @@ body {
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .numpad-button, .clear-buttons {
@@ -79,11 +104,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 06px;
     background-color: rgba(255, 255, 0, 0.5);
     color: rgb(66, 66, 66);
-    border: 2px  solid rgb(161, 114, 26);
+    border: 2px  solid rgba(80, 53, 4, 0.884);
+    font-weight: bold;
+}
 
+.clear-buttons {
+    font-weight: 500;
 }
 
 .numpad-button:hover, .clear-buttons:hover {
@@ -92,7 +121,10 @@ body {
 }
 
 .operator-button {
-    background-color: rgb(255, 136, 0);
+    background-color: rgba(255, 196, 0, 0.637);
+    font-size: 28px;
+    font-weight: lighter;
+    padding-top: 2px;
 }
 
 .operator-button-active {
@@ -101,8 +133,11 @@ body {
 }
 
 .equals {
-    background-color: rgba(207, 57, 3, 0.753);
-    color: rgb(66, 66, 66);
+    background-color: rgb(255, 145, 0);
+    font-size: 28px;
+    font-weight: lighter;
+    padding-top: 2px;
+
 }
 
 
