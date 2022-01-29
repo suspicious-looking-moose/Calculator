@@ -57,8 +57,13 @@ function createNumber(button) {
 
 // Activate Operator Choice Function
 function activateOperator() {
-    
+
     if (firstNumber&&secondNumber) {evaluate();}
+
+    operatorButtons.forEach(element => {
+        element.classList.remove('operator-button-active');
+    })
+    this.classList.add('operator-button-active');
     
     switch (this.id) {
         case '÷':
@@ -86,10 +91,14 @@ function activateOperator() {
 
 // Evaluator Function
 function evaluate() {
+
     if (secondNumber === 0 && operatorCheck === '÷') {
         displayResult.textContent = "Error.";
     }
     else if (firstNumber&&secondNumber) {
+        operatorButtons.forEach(element => {
+            element.classList.remove('operator-button-active');
+        })
         result = operate(operatorCheck, firstNumber, secondNumber);
         result = roundResult(result);
         displayResult.textContent = result;
@@ -99,6 +108,7 @@ function evaluate() {
         secondNumber = "";
         return result;
     }
+
 }
 
 // Round Number Function
@@ -114,6 +124,9 @@ function clearButton() {
     secondNumber = "";
     newNumber = "";
     operatorCheck = null;
+    operatorButtons.forEach(element => {
+        element.classList.remove('operator-button-active');
+    })
 }
 
 // Delete Button
