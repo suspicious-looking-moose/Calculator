@@ -216,6 +216,9 @@ function deleteButton() {
     if (!operatorCheck) {
         firstNumber = firstNumber.toString();
         firstNumber = firstNumber.slice(0, -1);
+        
+        const decimalCheck = firstNumber.search(".");
+        if (!decimalCheck) {decimalActive = false;}
 
         if(!firstNumber) {
             return clearButton();
@@ -227,9 +230,12 @@ function deleteButton() {
     else {
         secondNumber = secondNumber.toString();
         secondNumber = secondNumber.slice(0, -1);
+
+        const decimalCheck = secondNumber.search(".");
+        if (!decimalCheck) {decimalActive = false;}
+
         if (!secondNumber) {
-            secondNumber = 0;
-            displayResult.textContent = secondNumber;
+            displayResult.textContent = firstNumber;
             return secondNumber;
         }
     
