@@ -19,7 +19,6 @@ body {
 * {
     padding: 0;
     margin: 0;
-
 }
 
 .calculator-body {
@@ -36,7 +35,7 @@ body {
     border: 2px solid rgb(136, 89, 1);
     border-radius: 10px;
     position: static;
-    box-shadow: black 1px 1px 1px 1px;
+    box-shadow: rgb(110, 77, 4) 2px 2px 2px 1px;
 }
 
 .calc-name {
@@ -62,9 +61,8 @@ body {
     border: 2px  solid rgba(80, 53, 4, 0.884);
     border-radius: 5px;
     font-family: 'Digital';
-
-
     color: rgb(252, 252, 203);
+    letter-spacing: 0.1rem;
 }
 
 .calculator-screen h4, h6 {
@@ -125,6 +123,7 @@ body {
     font-size: 28px;
     font-weight: lighter;
     padding-top: 2px;
+    color: rgb(102, 78, 11);
 }
 
 .operator-button-active {
@@ -136,8 +135,8 @@ body {
     background-color: rgb(255, 145, 0);
     font-size: 28px;
     font-weight: lighter;
-    padding-top: 2px;
-
+    padding-top: 4px;
+    color: rgb(102, 78, 11);
 }
 
 

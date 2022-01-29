@@ -8,8 +8,82 @@ const deleteBtn = document.getElementById('delete'); // Delete Button
 const prevCalc = document.getElementById('screen-prev'); // Previous Calulation Display
 const displayResult = document.getElementById('screen-output') // Main Calculator Output
 
-// Keyboard Inputs
+// KEYBOARD FUNCTIONS:
+// Window Event Listener for Keydown
+window.addEventListener('keydown', keyboardInput);
 
+// Accept Initial Key Input Function
+function keyboardInput(element) {
+    if (element.key === " ") {return;}
+
+    if (element.key >= 0 && element.key <= 9 || element.key === ".") {
+        createNumberFromKey(element);
+    }
+    else if (element.key === 'd' || element.key === 'Backspace') {
+        deleteButton();
+    }
+    else if (element.key === 'c') {
+        clearButton();
+    }
+    else if (element.key === '=') {
+        evaluate();
+    }
+    else if (element.key === '/' || element.key === 'x' || element.key === '-' || element.key === '+') {
+        activateOperatorKey(element);
+    }
+}
+
+// Build Number with Key Input Function
+function createNumberFromKey(input) {
+    let value = input.key;
+    newNumber = value;
+
+    if (decimalActive === true && newNumber === ".") {return false;}
+    if (newNumber === ".") {decimalActive = true;}
+
+    if (!operatorCheck) {
+        firstNumber = firstNumber + newNumber;
+        newNumber = ""
+        displayResult.textContent = firstNumber;
+    }
+    else {
+        secondNumber = secondNumber + newNumber;
+        newNumber = "";
+        displayResult.textContent = secondNumber;
+    }
+}
+
+// Activate Operator Choice With Key Function
+function activateOperatorKey(element) {
+    decimalActive = false;
+    if (firstNumber&&secondNumber) {evaluate();}
+
+    let convertKey = element.key;
+    if (element.key === '/') {convertKey = '÷';} // Converts "/" to the Divide sign
+    if (element.key === 'x') {convertKey = '×';} // Convers 'x' to the Multiply sign
+
+    const opBtn = document.getElementById(`${convertKey}`);
+    opBtn.classList.add('operator-button-active');
+    
+    switch (opBtn.id) {
+        case '÷':
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '÷';
+            break;
+        case '×':
+            prevCalc.textContent = `${firstNumber} ${opBtn.id} `;
+            operatorCheck = '×';
+            break;
+        case '-':
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '-';
+            break;
+        case '+':
+            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
+            operatorCheck = '+';
+            break;
+    }
+}
 
 // Number Variables
 let newNumber = "";
@@ -76,22 +150,18 @@ function activateOperator() {
     
     switch (this.id) {
         case '÷':
-            console.log("Changed operator to divide!");
             prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
             operatorCheck = '÷';
             break;
         case '×':
-            console.log("Changed operator to Multiply!");
             prevCalc.textContent = `${firstNumber} ${this.id} `;
             operatorCheck = '×';
             break;
         case '-':
-            console.log("Changed operator to Subtract!");
             prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
             operatorCheck = '-';
             break;
         case '+':
-            console.log("Changed operator to Addition!");
             prevCalc.textContent = `${firstNumber}` + ` ${this.id} `;
             operatorCheck = '+';
             break;
@@ -169,7 +239,6 @@ function deleteButton() {
 
 // Operator Functions
 function operate(funcChoice, a, b) {
-    console.log("Evaluation function has been activated");
     switch (funcChoice) {
         case '÷':
             return divide(a, b);
@@ -198,78 +267,3 @@ function divide(a, b) {
     return a / b;
 }
 
-window.addEventListener('keydown', keyboardInput);
-
-function keyboardInput(element) {
-
-    if (element.key >= 0 && element.key <= 9 || element.key === ".") {
-        createNumberFromKey(element);
-    }
-    else if (element.key === 'd') {
-        deleteButton();
-    }
-    else if (element.key === 'c') {
-        clearButton();
-    }
-    else if (element.key === '=') {
-        evaluate();
-    }
-    else if (element.key === '/' || element.key === 'x' || element.key === '-' || element.key === '+') {
-        activateOperatorKey(element);
-    }
-}
-
-function createNumberFromKey(input) {
-    let value = input.key;
-    newNumber = value;
-
-    if (decimalActive === true && newNumber === ".") {return false;}
-    if (newNumber === ".") {decimalActive = true;}
-
-    if (!operatorCheck) {
-        firstNumber = firstNumber + newNumber;
-        newNumber = ""
-        displayResult.textContent = firstNumber;
-    }
-    else {
-        secondNumber = secondNumber + newNumber;
-        newNumber = "";
-        displayResult.textContent = secondNumber;
-    }
-}
-
-// Activate Operator Choice Function
-function activateOperatorKey(element) {
-    console.log(element);
-    decimalActive = false;
-
-    if (firstNumber&&secondNumber) {evaluate();}
-
-    const opBtn = document.getElementById(`${element.key}`);
-   
-    console.log(opBtn);
-    opBtn.classList.add('operator-button-active');
-    
-    switch (opBtn.id) {
-        case '/':
-            console.log("Changed operator to divide!");
-            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
-            operatorCheck = '÷';
-            break;
-        case 'x':
-            console.log("Changed operator to Multiply!");
-            prevCalc.textContent = `${firstNumber} ${opBtn.id} `;
-            operatorCheck = '×';
-            break;
-        case '-':
-            console.log("Changed operator to Subtract!");
-            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
-            operatorCheck = '-';
-            break;
-        case '+':
-            console.log("Changed operator to Addition!");
-            prevCalc.textContent = `${firstNumber}` + ` ${opBtn.id} `;
-            operatorCheck = '+';
-            break;
-    }
-}
